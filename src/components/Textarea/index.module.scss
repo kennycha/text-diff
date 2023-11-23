@@ -1,0 +1,13 @@
+.container {
+  width: 480px;
+  height: 270px;
+}
+
+.textarea {
+  display: block;
+  resize: none;
+  width: 100%;
+  height: 100%;
+  padding: 8px;
+  overscroll-behavior: none;
+}
