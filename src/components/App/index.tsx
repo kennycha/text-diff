@@ -1,17 +1,19 @@
 import { useState } from "react";
+import { diffWordsWithSpace } from "diff";
 import Empty from "../Empty";
 import DiffVisualizer from "../DiffVisualizer";
 import { useTextarea } from "../../hooks";
 import samplePrevText from "../../assets/sample_prev.txt?raw";
 import sampleCurrentText from "../../assets/sample_current.txt?raw";
+import type { Change } from "diff";
 import styles from "./index.module.scss";
 import classNames from "classnames/bind";
-import { Line } from "../../core";
 
 const cx = classNames.bind(styles);
 
 const App = () => {
   const [isEmpty, setIsEmpty] = useState(true);
+  const [diff, setDiff] = useState<Change[]>([]);
   const [prevTextarea, prevText, changePrevText] = useTextarea();
   const [currentTextarea, currentText, changeCurrentText] = useTextarea();
 
@@ -26,14 +28,10 @@ const App = () => {
   };
 
   const handleDiffButtonClick = () => {
-    console.log("prevText: ", prevText);
-    console.log("currentText: ", currentText);
-    console.log("get diff");
+    const diff = diffWordsWithSpace(prevText, currentText);
+    setDiff(diff);
     setIsEmpty(false);
   };
-
-  const line1 = new Line(1, "hi");
-  const line2 = new Line(2, "hii");
 
   return (
     <div className={cx("container")}>
@@ -59,7 +57,7 @@ const App = () => {
             <Empty />
           </div>
         )}
-        <DiffVisualizer />
+        <DiffVisualizer diff={diff} />
       </div>
     </div>
   );
